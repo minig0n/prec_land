@@ -184,43 +184,6 @@ class PrecLand:
             ros_img = self.bridge_object.cv2_to_imgmsg(draw_img, 'bgr8')
             self.newimg_pub.publish(ros_img)
 
-            # # Check if land operation is complete
-            # if dist < 0.8:
-            #     print("LAND complete, shutting down")
-            #     # rospy.signal_shutdown()
-            #     sys.exit()
-            #     return
-
-
-# Function to arm and then takeoff to a user specified altitude
-def arm_and_takeoff(aTargetAltitude):
-
-    print("Basic pre-arm checks")
-    # Don't let the user try to arm until autopilot is ready
-    while not vehicle.is_armable:
-        print(" Waiting for vehicle to initialise...")
-        time.sleep(1)
-            
-    print("Arming motors")
-    # Copter should arm in GUIDED mode
-    vehicle.mode    = VehicleMode("GUIDED")
-    vehicle.armed   = True
-
-    while not vehicle.armed:
-        print(" Waiting for arming...")
-        time.sleep(1)
-
-    print("Taking off!")
-    vehicle.simple_takeoff(aTargetAltitude) # Take off to target altitude
-
-    # Check that vehicle has reached takeoff altitude
-    while True:
-        print(" Altitude: ", vehicle.location.global_relative_frame.alt)
-        #Break and return from function just below target altitude.        
-        if vehicle.location.global_relative_frame.alt >= aTargetAltitude*0.95: 
-            print(f"Reached target altitude {vehicle.location.global_relative_frame.alt}")
-        break
-
 
 if __name__ == '__main__':
 
